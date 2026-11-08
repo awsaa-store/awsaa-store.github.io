@@ -90,6 +90,7 @@ dialog::backdrop{background:rgba(10,16,24,.55)}
 .bigloc .row{border:2px solid var(--ink)}
 .noloc{color:var(--muted);font-size:.9rem}
 .hint{font-size:.8rem;color:var(--muted)}
+#fRack{text-transform:uppercase}
 .locwrap{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap}
 .rack{display:flex;flex-direction:column-reverse;gap:3px;padding:6px;border:2px solid var(--ink);border-radius:6px;width:92px}
 .rack div{height:16px;border-radius:3px;background:var(--bg);border:1px solid var(--line);font-family:var(--f-mono);font-size:.62rem;color:var(--muted);display:flex;align-items:center;justify-content:center}
@@ -279,6 +280,7 @@ async function save(data){
 }
 $("dForm").addEventListener("submit",e=>{e.preventDefault();
   const a=$("fRack").value.trim().toUpperCase().replace(/\s+/g,"");if(!a){$("fStatus").textContent="اكتب الرف الأول، مثلاً A1.";return}
+  if(!/^[A-Z][0-9]*$/.test(a)){const s=$("fStatus");s.className="status warn";s.textContent="⚠️ الرف لازم يبدا بحرف إنجليزي (A أو B …) وبعده رقم، مثلاً A1 أو B2. ما ينفعش رقم بس.";$("fRack").focus();return}
   const data={rack:a,drawer:$("fDrawer").value.trim(),box:$("fBox").value.trim(),note:$("fNote").value.trim()};
   const st=$("fStatus");st.className="status";st.textContent="جاري التأكد من المكان…";
   Promise.resolve(loadLoc()).then(()=>{
