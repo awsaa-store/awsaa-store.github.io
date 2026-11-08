@@ -273,6 +273,7 @@ async function save(data){
     if(j.ok){try{localStorage.setItem("awsaa_pin",pin)}catch(e){}
       LOC[current.id]=Object.assign({},data);st.className="status ok";st.textContent=data.rack?"تم الحفظ ✓":"تم مسح المكان";showLoc();render();}
     else if(j.error==="pin"){st.textContent="الرمز السري غلط.";}
+    else if(j.error==="rack"){st.className="status warn";st.textContent="⚠️ الرف لازم يبدا بحرف إنجليزي (A أو B …) وبعده رقم، مثلاً A1 أو B2.";}
     else if(j.error==="dup"){st.className="status warn";st.textContent="⚠️ تكرار! المكان "+"\u2066"+(j.code||"")+"\u2069"+" مسجل من قبل للمنتج: «"+(j.name||"")+"» (#"+(j.id||"")+"). اختار مكان ثاني.";if(j.id){LOC[j.id]=LOC[j.id]||{}}loadLoc();}
     else st.textContent="ما تمش الحفظ، جرب مرة ثانية.";
   }catch(e){st.textContent="ما تمش الحفظ. تأكد من النت وجرب مرة ثانية.";}
