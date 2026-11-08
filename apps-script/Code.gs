@@ -35,9 +35,21 @@ function doPost(e) {
   lock.waitLock(10000);
   try {
     const sh = sheet_();
-    const ids = sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues();
-    const i = ids.findIndex(r => Number(r[0]) === Number(d.id));
+    const all = sh.getRange(2, 1, sh.getLastRow() - 1, 6).getDisplayValues();
+    const i = all.findIndex(r => Number(r[0]) === Number(d.id));
     if (i < 0) return json_({ ok: false, error: 'id' });
+    // منع تكرار نفس المكان (الرف-الدرج-البوكس) لمنتجين
+    const nk = v => String(v || '').trim().toUpperCase().replace(/\s+/g, '').replace(/^0+(?=\d)/, '');
+    const r = nk(d.rack), dr = nk(d.drawer), bx = nk(d.box);
+    if (r) {
+      for (let k = 0; k < all.length; k++) {
+        if (k === i) continue;
+        const a = all[k];
+        if (nk(a[3]) === r && nk(a[4]) === dr && nk(a[5]) === bx) {
+          return json_({ ok: false, error: 'dup', id: a[0], name: a[1], code: [r, dr, bx].filter(x => x).join('-') });
+        }
+      }
+    }
     const clean = s => String(s || '').slice(0, 200);
     const range = sh.getRange(i + 2, 4, 1, 4);
     range.setNumberFormat('@');
