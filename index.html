@@ -61,8 +61,8 @@ main .wrap{padding-block:16px 40px}
 .pbtn:focus-visible{outline:2px solid var(--accent)}
 .pbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8}
 #label{display:none}
-@page{size:105mm 148mm;margin:6mm}
-@media print{body>*:not(#label){display:none!important}html,body{background:#fff!important}:root{padding:0!important}#label{display:flex!important;flex-direction:column;align-items:center;justify-content:space-between;gap:3mm;width:93mm;height:134mm;color:#000;font-family:var(--f-body);text-align:center;break-inside:avoid}#label .li{width:100%;height:70mm;display:flex;align-items:center;justify-content:center;border:0.3mm solid #000;border-radius:3mm;padding:2mm}#label .li img{max-width:100%;max-height:100%;object-fit:contain}#label .ln{font-size:15pt;font-weight:700;line-height:1.3}#label .lc{font-family:var(--f-mono);font-size:34pt;font-weight:700;border:0.8mm solid #000;border-radius:3mm;padding:1mm 6mm;direction:ltr}#label .lk{font-size:9pt}#label .lnum{font-size:9pt;color:#333}}
+@page{size:105mm 148mm;margin:0}
+@media print{html,body{margin:0!important;padding:0!important;background:#fff!important}:root{padding:0!important}body>*:not(#label){display:none!important}#label{display:flex!important;flex-direction:column;gap:2.5mm;box-sizing:border-box;width:105mm;height:148mm;margin:0 auto;padding:5mm;color:#000;font-family:Tahoma,"Segoe UI",Arial,sans-serif;direction:rtl;break-inside:avoid;overflow:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}#label .lh{display:flex;justify-content:space-between;align-items:center;font-size:10pt;font-weight:700;border-bottom:0.5mm solid #000;padding-bottom:1.5mm}#label .lh .lnum{direction:ltr;font-family:Arial,sans-serif;font-size:11pt}#label .li{flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:center}#label .li img{display:block;max-width:85mm;max-height:100%;width:auto;height:auto;object-fit:contain;margin:0 auto}#label .ln{font-size:16pt;font-weight:700;line-height:1.3;text-align:center}#label .lc{background:#000;color:#fff;border-radius:2.5mm;text-align:center;padding:2mm 0;font-family:"Arial Black",Arial,sans-serif;font-weight:900;font-size:40pt;line-height:1.1;direction:ltr;letter-spacing:1mm}#label .lc.none{background:#fff;color:#000;border:0.6mm dashed #000;font-family:Tahoma,Arial,sans-serif;font-size:20pt;letter-spacing:0}#label .lp{display:grid;grid-template-columns:repeat(3,1fr);direction:ltr;border:0.5mm solid #000;border-radius:2mm;text-align:center}#label .lp div{padding:1mm 0}#label .lp div+div{border-left:0.5mm solid #000}#label .lp span{display:block;font-size:9pt;font-weight:700}#label .lp b{display:block;font-size:17pt;font-family:Arial,sans-serif}}
 .card .name{font-weight:600;font-size:.95rem;line-height:1.35;overflow-wrap:anywhere}
 .loc{display:inline-flex;align-items:stretch;border-radius:6px;overflow:hidden;font-family:var(--f-mono);font-size:.78rem;width:max-content;max-width:100%}
 .loc .a{background:var(--sign);color:var(--sign-ink);padding:2px 8px;font-weight:600}
@@ -139,7 +139,7 @@ input.f:focus,select.f:focus,textarea.f:focus{outline:2px solid var(--accent);bo
   <div class="empty" id="empty" hidden><b>ما لقيناش منتج بهالاسم</b><span>جرب كلمة أقصر، أو جزء من الاسم بس.</span></div>
 </div></main>
 
-<div id="label" aria-hidden="true"><div class="li"><img id="lImg" alt=""></div><div class="ln" id="lName"></div><div class="lc" id="lCode"></div><div class="lk">الرف - الدرج - البوكس</div><div class="lnum" id="lNum"></div></div>
+<div id="label" aria-hidden="true"><div class="lh"><span>اوساا 💚روڨان💜</span><span class="lnum" id="lNum"></span></div><div class="li"><img id="lImg" alt=""></div><div class="ln" id="lName"></div><div class="lc" id="lCode"></div><div class="lp" id="lParts"><div><span>الرف</span><b id="lR"></b></div><div><span>الدرج</span><b id="lD"></b></div><div><span>البوكس</span><b id="lB"></b></div></div></div>
 <dialog id="dlg" aria-labelledby="dName">
   <button class="x" id="dClose" type="button" aria-label="إغلاق">×</button>
   <div class="sheet">
@@ -228,7 +228,7 @@ $("grid").addEventListener("click",e=>{const pb=e.target.closest(".pbtn");if(pb)
 $("grid").addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.classList.contains("card")){e.preventDefault();openP(+e.target.dataset.id)}});
 const PRN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/></svg>';
 function locCode(l){if(!has(l))return "";return [l.rack,l.drawer,l.box].filter(x=>String(x||"").trim()).join("-")}
-function printLabel(id){const p=P.find(x=>x.id===id);if(!p)return;const im=$("lImg");$("lName").textContent=p.name;$("lCode").textContent=locCode(LOC[id])||"بدون مكان";$("lNum").textContent="منتج رقم "+id;const go=()=>setTimeout(()=>window.print(),60);if(im.getAttribute("src")===img(id)&&im.complete)go();else{im.onload=go;im.onerror=go;im.src=img(id)}}
+function printLabel(id){const p=P.find(x=>x.id===id);if(!p)return;const l=LOC[id]||{};const code=locCode(LOC[id]);const im=$("lImg");$("lName").textContent=p.name;const c=$("lCode");c.textContent=code||"بدون مكان";c.className="lc"+(code?"":" none");$("lParts").hidden=!code;$("lR").textContent=l.rack||"-";$("lD").textContent=l.drawer||"-";$("lB").textContent=l.box||"-";$("lNum").textContent="#"+id;const go=()=>{const f=document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve();f.then(()=>setTimeout(()=>window.print(),80))};if(im.getAttribute("src")===img(id)&&im.complete)go();else{im.onload=go;im.onerror=go;im.src=img(id)}}
 $("dPrint").onclick=()=>{if(current)printLabel(current.id)};
 function showLoc(){
   const l=LOC[current.id];
