@@ -41,6 +41,8 @@ function doPost(e) {
     // منع تكرار نفس المكان (الرف-الدرج-البوكس) لمنتجين
     const nk = v => String(v || '').trim().toUpperCase().replace(/\s+/g, '').replace(/^0+(?=\d)/, '');
     const r = nk(d.rack), dr = nk(d.drawer), bx = nk(d.box);
+    // الرف لازم يبدا بحرف إنجليزي، مثلاً A1
+    if (r && !/^[A-Z][0-9]*$/.test(r)) return json_({ ok: false, error: 'rack' });
     if (r) {
       for (let k = 0; k < all.length; k++) {
         if (k === i) continue;
