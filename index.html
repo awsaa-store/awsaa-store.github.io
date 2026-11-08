@@ -232,7 +232,7 @@ function parseCSV(txt){const rows=[];let row=[],f="",q=false;
     else if(c=='"')q=true;else if(c==","){row.push(f);f=""}else if(c=="\n"){row.push(f);rows.push(row);row=[];f=""}else if(c!="\r")f+=c}
   if(f||row.length){row.push(f);rows.push(row)}return rows}
 async function loadLoc(){
-  if(!SHEET_CSV)return;
+  if(!SHEET_CSV||SHEET_CSV.indexOf("http")!==0){$("sync").textContent="";return}
   try{const r=await fetch(SHEET_CSV+(SHEET_CSV.includes("?")?"&":"?")+"t="+Date.now(),{cache:"no-store"});
     if(!r.ok)throw 0;const rows=parseCSV(await r.text());
     for(const k in LOC)delete LOC[k];
