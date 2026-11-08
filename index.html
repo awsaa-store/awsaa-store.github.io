@@ -110,7 +110,7 @@ input.f:focus,select.f:focus,textarea.f:focus{outline:2px solid var(--accent);bo
 .btn[disabled]{opacity:.55;cursor:default}
 .status{font-size:.85rem;color:var(--muted)}
 .status.ok{color:var(--ok)}
-.status.warn{color:#d14b3a;font-weight:600;line-height:1.5}
+.status.warn{display:block;flex-basis:100%;order:-1;background:rgba(209,75,58,.12);border:1.5px solid #d14b3a;border-radius:10px;padding:10px 12px;color:#d14b3a;font-weight:700;font-size:.95rem;line-height:1.6}
 .x{position:sticky;top:8px;float:left;margin:8px;z-index:2;width:38px;height:38px;border-radius:50%;border:0;background:rgba(20,32,46,.75);color:#fff;font-size:1.3rem;cursor:pointer}
 .ro{font-size:.8rem;color:var(--muted)}
 @media (prefers-reduced-motion:no-preference){.card{transition:transform .12s ease}.card:hover{transform:translateY(-2px)}}
@@ -272,7 +272,7 @@ async function save(data){
     if(j.ok){try{localStorage.setItem("awsaa_pin",pin)}catch(e){}
       LOC[current.id]=Object.assign({},data);st.className="status ok";st.textContent=data.rack?"تم الحفظ ✓":"تم مسح المكان";showLoc();render();}
     else if(j.error==="pin"){st.textContent="الرمز السري غلط.";}
-    else if(j.error==="dup"){st.className="status warn";st.textContent="⚠️ المكان "+(j.code||"")+" مستخدم لمنتج ثاني: «"+(j.name||"")+"» (#"+(j.id||"")+"). اختار مكان ثاني.";if(j.id){LOC[j.id]=LOC[j.id]||{}}loadLoc();}
+    else if(j.error==="dup"){st.className="status warn";st.textContent="⚠️ تكرار! المكان "+"\u2066"+(j.code||"")+"\u2069"+" مسجل من قبل للمنتج: «"+(j.name||"")+"» (#"+(j.id||"")+"). اختار مكان ثاني.";if(j.id){LOC[j.id]=LOC[j.id]||{}}loadLoc();}
     else st.textContent="ما تمش الحفظ، جرب مرة ثانية.";
   }catch(e){st.textContent="ما تمش الحفظ. تأكد من النت وجرب مرة ثانية.";}
   $("fSave").disabled=false;$("fClear").disabled=false;
@@ -283,7 +283,7 @@ $("dForm").addEventListener("submit",e=>{e.preventDefault();
   const st=$("fStatus");st.className="status";st.textContent="جاري التأكد من المكان…";
   Promise.resolve(loadLoc()).then(()=>{
     const d=findDup(data,current.id);
-    if(d){st.className="status warn";st.textContent="⚠️ المكان "+locCode(data)+" مستخدم لمنتج ثاني: «"+d.name+"» (#"+d.id+"). اختار مكان ثاني.";return}
+    if(d){st.className="status warn";st.scrollIntoView({block:"nearest"});st.textContent="⚠️ تكرار! المكان "+"\u2066"+locCode(data)+"\u2069"+" مسجل من قبل للمنتج: «"+d.name+"» (#"+d.id+"). اختار مكان ثاني.";return}
     save(data);
   });
 });
