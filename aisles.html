@@ -1,0 +1,133 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>قائمة الممرات · اوساا 💚روڨان💜</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Readex+Pro:wght@500;700&display=swap">
+<style>
+/* Layout: control bar on screen, then one section per aisle (A, B, …) with a table of its products sorted by rack-drawer-box; each aisle prints on its own A4 page. */
+:root{
+  --bg:#eef1f4; --surface:#ffffff; --ink:#14202e; --muted:#5d6b7a; --line:#d5dbe2;
+  --sign:#f2c200; --sign-ink:#14202e; --accent:#1f5f9e;
+  --f-display:"Readex Pro","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans Arabic",Tahoma,"Segoe UI",Arial,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f151c;--surface:#18212b;--ink:#e7edf3;--muted:#93a1b0;--line:#2a3644;--accent:#6fa8e0;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0f151c;--surface:#18212b;--ink:#e7edf3;--muted:#93a1b0;--line:#2a3644;--accent:#6fa8e0;color-scheme:dark}
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+img{max-width:100%}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1000px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar .wrap{padding-block:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.bar h1{font-family:var(--f-display);font-size:1.2rem;margin:0}
+.ctrls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+select,.btn{font:inherit;font-size:.95rem;border-radius:10px;padding:8px 14px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.btn{cursor:pointer;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.status{color:var(--muted);font-size:.9rem;padding-block:10px}
+main .wrap{padding-block:16px 40px;display:grid;gap:18px}
+.aisle{background:var(--surface);border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.ahead{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:2px solid var(--ink)}
+.ahead h2{margin:0;font-family:var(--f-display);font-size:1.3rem;display:flex;align-items:center;gap:10px}
+.ahead h2 .tag{background:var(--sign);color:var(--sign-ink);border-radius:8px;padding:0 12px;font-size:1.5rem;direction:ltr}
+.ahead .meta{color:var(--muted);font-size:.85rem;text-align:left}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right;vertical-align:middle}
+th{font-size:.78rem;color:var(--muted);font-weight:700;background:var(--bg)}
+td.n{color:var(--muted);font-size:.8rem;width:40px}
+td.im{width:56px}
+td.im img{width:46px;height:46px;object-fit:contain;background:#fff;border-radius:6px;display:block}
+td.code{font-family:Arial,sans-serif;font-weight:800;direction:ltr;text-align:left;white-space:nowrap;font-size:1rem}
+td.c{text-align:center;font-family:Arial,sans-serif;font-weight:700;width:56px}
+td.nm{font-weight:600}
+td.nt{color:var(--muted);font-size:.82rem}
+tr.rackstart td{border-top:2px solid var(--ink)}
+.empty{text-align:center;color:var(--muted);padding:50px 10px}
+.pfoot{display:none}
+@page{size:A4 portrait;margin:12mm 10mm}
+@media print{
+  :root{padding:0!important}
+  html,body{background:#fff!important;color:#000!important}
+  body{font-family:Tahoma,"Segoe UI",Arial,sans-serif;font-size:10.5pt}
+  .bar,.status{display:none!important}
+  .wrap{max-width:none;padding:0}
+  main .wrap{display:block;padding:0}
+  .aisle{border:0;border-radius:0;background:#fff;break-before:page}
+  .aisle:first-child{break-before:auto}
+  .ahead{border-bottom:0.6mm solid #000;padding:0 0 2mm}
+  .ahead h2{font-size:18pt;color:#000}
+  .ahead h2 .tag{background:#000;color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .ahead .meta{color:#000;font-size:9pt}
+  .tw{overflow:visible}
+  table{font-size:10pt}
+  thead{display:table-header-group}
+  tr{break-inside:avoid}
+  th{background:#eee!important;color:#000;font-size:8.5pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  th,td{border-bottom:0.25mm solid #999;padding:1mm 2mm;color:#000}
+  td.im img{width:11mm;height:11mm}
+  td.code{font-size:11pt}
+  tr.rackstart td{border-top:0.5mm solid #000}
+  .pfoot{display:block;margin-top:3mm;font-size:8pt;color:#333}
+}
+</style></head><body>
+<header class="bar"><div class="wrap">
+  <h1>قائمة الممرات</h1>
+  <div class="ctrls">
+    <label for="sel" class="sr">الممر</label>
+    <select id="sel"><option value="">كل الممرات</option></select>
+    <button class="btn primary" id="pr" type="button">🖨️ طباعة A4</button>
+    <a class="btn" href="./">رجوع للمنتجات</a>
+  </div>
+</div></header>
+<main><div class="wrap">
+  <div class="status" id="st">جاري تحميل الأماكن…</div>
+  <div id="out"></div>
+</div></main>
+<script>
+const API="https://script.google.com/macros/s/AKfycbxfmp0M8wctirbFi1diBPNpRKnN69qN_U5bw0HBGwoP49oqxJVG0F67wANiIuezQDAnVw/exec";
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const img=id=>"img/p"+String(id).padStart(3,"0")+".jpg";
+const num=v=>{const m=String(v||"").match(/\d+/);return m?parseInt(m[0],10):0};
+let ROWS=[];
+function parseCSV(t){const rows=[];let row=[],f="",q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c=='"'){if(t[i+1]=='"'){f+='"';i++}else q=false}else f+=c}else if(c=='"')q=true;else if(c==","){row.push(f);f=""}else if(c=="\n"){row.push(f);rows.push(row);row=[];f=""}else if(c!="\r")f+=c}if(f||row.length){row.push(f);rows.push(row)}return rows}
+function render(){
+  const pick=$("sel").value;
+  const groups={};
+  ROWS.forEach(r=>{const a=r.rack.charAt(0);(groups[a]=groups[a]||[]).push(r)});
+  const letters=Object.keys(groups).sort();
+  const show=pick?letters.filter(l=>l===pick):letters;
+  const today=new Date().toLocaleDateString("ar-LY",{year:"numeric",month:"2-digit",day:"2-digit"});
+  if(!show.length){$("out").innerHTML='<div class="empty">لسه ما فيش منتجات محدد مكانها.</div>';return}
+  $("out").innerHTML=show.map(l=>{
+    const list=groups[l].sort((x,y)=>num(x.rack)-num(y.rack)||num(x.drawer)-num(y.drawer)||num(x.box)-num(y.box)||x.id-y.id);
+    const racks=new Set(list.map(x=>x.rack)).size;
+    let prev=null;
+    const trs=list.map((x,i)=>{const start=prev!==null&&prev!==x.rack;prev=x.rack;
+      const code=[x.rack,x.drawer,x.box].filter(v=>String(v).trim()).join("-");
+      return '<tr'+(start?' class="rackstart"':'')+'><td class="n">'+(i+1)+'</td><td class="im"><img loading="lazy" src="'+img(x.id)+'" alt=""></td><td class="nm">'+esc(x.name)+' <span style="color:var(--muted);font-weight:400">#'+x.id+'</span></td><td class="code">'+esc(code)+'</td><td class="c">'+esc(x.rack)+'</td><td class="c">'+esc(x.drawer||"-")+'</td><td class="c">'+esc(x.box||"-")+'</td><td class="nt">'+esc(x.note||"")+'</td></tr>'}).join("");
+    return '<section class="aisle"><div class="ahead"><h2>ممر <span class="tag">'+esc(l)+'</span></h2><div class="meta">'+list.length+' منتج · '+racks+' رف<br>'+today+'</div></div>'+
+      '<div class="tw"><table><thead><tr><th>#</th><th>الصورة</th><th>المنتج</th><th>المكان</th><th>الرف</th><th>الدرج</th><th>البوكس</th><th>ملاحظة</th></tr></thead><tbody>'+trs+'</tbody></table></div>'+
+      '<div class="pfoot">ممر '+esc(l)+' · '+list.length+' منتج · اطبع بتاريخ '+today+'</div></section>'}).join("");
+}
+async function load(){
+  try{
+    const [csv,api]=await Promise.all([fetch("products.csv").then(r=>r.text()),fetch(API+"?t="+Date.now()).then(r=>r.json())]);
+    const names={};parseCSV(csv).slice(1).forEach(c=>{const id=parseInt(c[0],10);if(id)names[id]=c[1]});
+    if(!api.ok)throw 0;
+    ROWS=api.rows.map(r=>({id:parseInt(r.id,10),name:names[parseInt(r.id,10)]||"",rack:String(r.rack||"").trim().toUpperCase(),drawer:String(r.drawer||"").trim(),box:String(r.box||"").trim(),note:String(r.note||"").trim()})).filter(r=>r.id&&/^[A-Z]/.test(r.rack));
+    const letters=[...new Set(ROWS.map(r=>r.rack.charAt(0)))].sort();
+    const sel=$("sel"),keep=sel.value;sel.innerHTML='<option value="">كل الممرات</option>'+letters.map(l=>'<option value="'+l+'">ممر '+l+'</option>').join("");sel.value=letters.includes(keep)?keep:"";
+    $("st").textContent=ROWS.length+" منتج محدد مكانه في "+letters.length+" ممر";
+    render();
+  }catch(e){$("st").textContent="ما قدرناش نجيبو الأماكن، تأكد من النت وحدّث الصفحة.";}
+}
+$("sel").addEventListener("change",render);
+$("pr").addEventListener("click",()=>{const ims=[...document.querySelectorAll("#out img")];ims.forEach(i=>i.loading="eager");Promise.all(ims.map(i=>i.complete?1:new Promise(r=>{i.onload=i.onerror=r}))).then(()=>window.print())});
+load();
+</script>
+</body></html>
